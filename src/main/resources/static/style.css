@@ -1,0 +1,159 @@
+h1 {
+  font-family: 'Asap', sans-serif;
+  text-align: left;
+  vertical-align: center;
+  font-size: 400%;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bolder;
+}
+
+h3 {
+  font-family: 'Asap', sans-serif;
+  text-align: left;
+  vertical-align: center;
+  font-size: 100%;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+}
+
+sub {
+  font-family: 'Asap', sans-serif;
+  text-align: left;
+  vertical-align: center;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 100;
+  padding-top: 2%;
+  font-size: 130%;
+  line-height: normal
+}
+
+.stats-table {
+  font-family: 'Asap', sans-serif;
+  font-size: 120%;
+  border: 0;
+  background-color: rgb(35, 36, 38);
+  color: white;
+}
+
+th.stats-table td.stats-table {
+  font-family: 'Asap', sans-serif;
+  font-size: medium;
+}
+
+.alignright {
+  display: inline;
+  float: right;
+  margin-left: 1em;
+  margin-right: 0.6em;
+}
+
+.align-on-desktop-right-phone-left {
+  display: inline;
+  float: right;
+  margin-left: 1.3em;
+  margin-right: 0.6em;
+}
+
+.alignleft {
+  margin-left: 2%;
+  display: inline;
+  float: left;
+  margin-right: 1.4em;
+}
+
+.header {
+  align-self: start;
+  height: auto;
+  width: auto;
+  font-family: 'Asap', sans-serif;
+  background-color: rgb(35, 36, 38);
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+tr.main-table:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+th.main-table {
+  text-align: center !important;
+}
+
+th, td {
+  font-family: 'Asap', sans-serif;
+  padding: 15px;
+}
+
+.bold-on-desktop {
+  font-weight: bold;
+}
+
+.defaultFont {
+  font-family: 'Asap', sans-serif;
+}
+
+@media (max-width: 768px) {
+  th, td {
+    padding: 9px;
+  }
+
+  table.stats-table {
+    margin-left: -2% !important;
+  }
+
+  .bold-on-desktop {
+    font-weight: normal;
+  }
+
+  h1 {
+    font-size: 200%;
+    font-weight: 500;
+  }
+
+  sub {
+    font-size: 80%;
+  }
+
+  table.main-table {
+    width: auto;
+  }
+
+  .align-on-desktop-right-phone-left {
+    margin-left: 2%;
+    text-align: left;
+    display: inline;
+    float: left;
+    margin-right: 1.4em;
+  }
+
+  .hide-on-phone {
+     display: none;
+   }
+
+  .show-on-phone {
+    display: block;
+  }
+
+}
+
+
+table.main-table, th.main-table, td.main-table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+table.main-table {
+  border-spacing: 5px;
+  width: 65%;
+  border-color: rgb(35, 36, 38);
+  margin-left: auto;
+  margin-top: 5%;
+  margin-right: auto;
+}
