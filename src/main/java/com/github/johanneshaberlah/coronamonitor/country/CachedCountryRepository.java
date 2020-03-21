@@ -1,5 +1,7 @@
 package com.github.johanneshaberlah.coronamonitor.country;
 
+import com.github.johanneshaberlah.coronamonitor.common.RefreshingSupplier;
+import com.github.johanneshaberlah.coronamonitor.common.TimeAndUnit;
 import com.google.common.base.Suppliers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -44,10 +46,10 @@ public final class CachedCountryRepository implements CountryRepository {
   }
 
   private Supplier<Collection<Country>> createCountrySupplier(){
-    return Suppliers.memoizeWithExpiration(() -> {
+    return RefreshingSupplier.create(() -> {
       Collection<Country> countries = delegate.collectCountries();
       informationRepository.applyCountryInfectionInformation(countries);
       return countries;
-    }, 4, TimeUnit.HOURS);
+    }, TimeAndUnit.create(TimeUnit.HOURS, 2));
   }
 }
