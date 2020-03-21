@@ -11,17 +11,17 @@ import java.util.stream.Collectors;
 
 @Component
 public final class CountryModel {
-  private CountryCollector countryCollector;
+  private CountryRepository repository;
   private GlobalInformationProvider globalInformationProvider;
 
   @Autowired
-  private CountryModel(CountryCollector countryCollector, GlobalInformationProvider globalInformationProvider) {
-    this.countryCollector = countryCollector;
+  private CountryModel(CountryRepository repository, GlobalInformationProvider globalInformationProvider) {
+    this.repository = repository;
     this.globalInformationProvider = globalInformationProvider;
   }
 
   Collection<Country> findMostInfectedCountries(int limit) {
-    return this.countryCollector.stream()
+    return this.repository.collectCountries().stream()
             .distinct()
             .filter(country -> country.infectionInformation() != null)
             .sorted((left, right) -> Integer.compare(right.infectionInformation().confirmed(), left.infectionInformation().confirmed()))

@@ -17,15 +17,12 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
   private static final String BASE_URL = "https://covid19.mathdro.id/api/countries/%s";
 
   private JsonReader jsonReader;
-  private CountryRepository countryRepository;
 
   @Autowired
   private WebCountryInfectionInformationRepository(
-    JsonReader jsonReader,
-    CountryRepository countryRepository
+    JsonReader jsonReader
   ) {
     this.jsonReader = jsonReader;
-    this.countryRepository = countryRepository;
   }
 
   @Override
@@ -51,10 +48,5 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
       }
     }
     return Optional.ofNullable(result);
-  }
-
-  @Override
-  public void applyCountryInfectionInformation() {
-    applyCountryInfectionInformation(countryRepository.collectCountries());
   }
 }

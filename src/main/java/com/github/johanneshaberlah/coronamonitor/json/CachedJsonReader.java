@@ -6,13 +6,16 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gson.JsonElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 @Primary
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 @Component
 public final class CachedJsonReader implements JsonReader {
   private JsonReader delegate;
@@ -22,6 +25,7 @@ public final class CachedJsonReader implements JsonReader {
   private CachedJsonReader(JsonReader delegate) {
     this.delegate = delegate;
     this.cache = createCache();
+    System.out.println("Creating JsonReader with delegate " + delegate.getClass().getSimpleName());
   }
 
   @Override
@@ -31,7 +35,7 @@ public final class CachedJsonReader implements JsonReader {
 
   private LoadingCache<URL, JsonElement> createCache(){
     return CacheBuilder.newBuilder()
-      .expireAfterAccess(10, TimeUnit.MINUTES)
+      .expireAfterAccess(1, TimeUnit.HOURS)
       .build(createDelegatingCacheLoader());
   }
 
@@ -43,10 +47,4 @@ public final class CachedJsonReader implements JsonReader {
       }
     };
   }
-
-  public static CachedJsonReader create(JsonReader delegate){
-    Preconditions.checkNotNull(delegate);
-    return new CachedJsonReader(delegate);
-  }
-
 }

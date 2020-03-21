@@ -1,20 +1,31 @@
 package com.github.johanneshaberlah.coronamonitor.country;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Suppliers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+@Component
+@Primary
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public final class CachedCountryRepository implements CountryRepository {
   private CountryRepository delegate;
+  private CountryInfectionInformationRepository informationRepository;
   private Supplier<Collection<Country>> countrySupplier;
 
-  private CachedCountryRepository(CountryRepository delegate) {
+  @Autowired
+  private CachedCountryRepository(CountryRepository delegate, CountryInfectionInformationRepository informationRepository) {
     this.delegate = delegate;
+    this.informationRepository = informationRepository;
     countrySupplier = createCountrySupplier();
+    collectCountries();
   }
 
   @Override
@@ -33,11 +44,10 @@ public final class CachedCountryRepository implements CountryRepository {
   }
 
   private Supplier<Collection<Country>> createCountrySupplier(){
-    return Suppliers.memoizeWithExpiration(() -> delegate.collectCountries(), 4, TimeUnit.HOURS);
-  }
-
-  public static CachedCountryRepository create(CountryRepository delegate){
-    Preconditions.checkNotNull(delegate);
-    return new CachedCountryRepository(delegate);
+    return Suppliers.memoizeWithExpiration(() -> {
+      Collection<Country> countries = delegate.collectCountries();
+      informationRepository.applyCountryInfectionInformation(countries);
+      return countries;
+    }, 4, TimeUnit.HOURS);
   }
 }

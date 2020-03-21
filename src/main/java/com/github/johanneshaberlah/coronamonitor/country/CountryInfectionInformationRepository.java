@@ -6,6 +6,4 @@ public interface CountryInfectionInformationRepository {
 
   void applyCountryInfectionInformation(Collection<Country> countries);
 
-  void applyCountryInfectionInformation();
-
 }
