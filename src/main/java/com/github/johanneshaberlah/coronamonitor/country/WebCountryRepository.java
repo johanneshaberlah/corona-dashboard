@@ -20,12 +20,10 @@ public final class WebCountryRepository implements CountryRepository {
   private static final String PATH_FORMAT = "%s/%s";
   private static final String ISO_STYLE = "iso3";
 
-  private ProvinceRepository provinceRepository;
   private JsonReader jsonReader;
 
   @Autowired
-  private WebCountryRepository(ProvinceRepository provinceRepository, JsonReader jsonReader) {
-    this.provinceRepository = provinceRepository;
+  private WebCountryRepository(JsonReader jsonReader) {
     this.jsonReader = jsonReader;
   }
 
@@ -65,7 +63,9 @@ public final class WebCountryRepository implements CountryRepository {
   }
 
   private JsonObject createJsonObject(){
-    return jsonReader.readJsonObject(UniformResourceLocatorFactory.create(String.format(PATH_FORMAT, BASE_URL, PATH))).getAsJsonObject();
+    return jsonReader.readJsonObject(
+      UniformResourceLocatorFactory.create(String.format(PATH_FORMAT, BASE_URL, PATH))
+    ).getAsJsonObject();
   }
 
   private Country createCountry(Map.Entry<String, JsonElement> entry){

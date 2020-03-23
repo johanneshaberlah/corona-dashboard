@@ -16,7 +16,11 @@ public final class GlobalInformationProvider {
     this.jsonReader = jsonReader;
   }
 
-  public InfectionInformation globalInfectionInformation(){
-    return InfectionInformation.of(jsonReader.readJsonObject(UniformResourceLocatorFactory.create(BASE_URL)).getAsJsonObject());
+  public InfectionInformation globalInfectionInformation() {
+    return InfectionInformation.of(
+      jsonReader.readJsonObject(
+        UniformResourceLocatorFactory.create(BASE_URL)
+      ).getAsJsonObject()
+    );
   }
 }

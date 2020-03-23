@@ -19,9 +19,9 @@ public final class CountryNameConverter implements Converter<String, Optional<Co
   @Override
   public Optional<Country> convert(String countryName) {
     return repository
-            .collectCountries()
-            .stream()
-            .filter(country -> country.name().equalsIgnoreCase(countryName))
-            .findFirst();
+      .collectCountries()
+      .stream()
+      .filter(country -> country.name().equalsIgnoreCase(countryName))
+      .findFirst();
   }
 }

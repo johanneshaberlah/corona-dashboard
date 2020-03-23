@@ -19,9 +19,7 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
   private JsonReader jsonReader;
 
   @Autowired
-  private WebCountryInfectionInformationRepository(
-    JsonReader jsonReader
-  ) {
+  private WebCountryInfectionInformationRepository(JsonReader jsonReader) {
     this.jsonReader = jsonReader;
   }
 
@@ -40,13 +38,19 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
   }
 
   private Optional<JsonElement> findInformationByNameOrIso(Country country){
-    JsonElement result = jsonReader.readJsonObject(UniformResourceLocatorFactory.create(String.format(BASE_URL, country.name())));
+    JsonElement result = readJsonElement(country.name());
     if (result == JsonNull.INSTANCE) {
-      result = jsonReader.readJsonObject(UniformResourceLocatorFactory.create(String.format(BASE_URL, country.iso())));
+      result = readJsonElement(country.iso());
       if (result == JsonNull.INSTANCE){
         return Optional.empty();
       }
     }
     return Optional.ofNullable(result);
+  }
+
+  private JsonElement readJsonElement(String parameter){
+    return jsonReader.readJsonObject(
+      UniformResourceLocatorFactory.create(String.format(BASE_URL, parameter))
+    );
   }
 }

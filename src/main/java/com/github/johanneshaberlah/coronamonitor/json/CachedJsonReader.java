@@ -25,7 +25,6 @@ public final class CachedJsonReader implements JsonReader {
   private CachedJsonReader(JsonReader delegate) {
     this.delegate = delegate;
     this.cache = createCache();
-    System.out.println("Creating JsonReader with delegate " + delegate.getClass().getSimpleName());
   }
 
   @Override

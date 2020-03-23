@@ -23,7 +23,10 @@ public final class CachedCountryRepository implements CountryRepository {
   private Supplier<Collection<Country>> countrySupplier;
 
   @Autowired
-  private CachedCountryRepository(CountryRepository delegate, CountryInfectionInformationRepository informationRepository) {
+  private CachedCountryRepository(
+    CountryRepository delegate,
+    CountryInfectionInformationRepository informationRepository
+  ) {
     this.delegate = delegate;
     this.informationRepository = informationRepository;
     countrySupplier = createCountrySupplier();

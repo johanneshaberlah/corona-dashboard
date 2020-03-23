@@ -3,10 +3,14 @@ package com.github.johanneshaberlah.coronamonitor.common;
 import com.google.common.base.Preconditions;
 
 import java.sql.Time;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public final class RefreshingSupplier<Type> implements Supplier<Type> {
+  private static final ExecutorService service = Executors.newCachedThreadPool();
+
   private TimeAndUnit invalidationCycle;
   private Supplier<Type> delegate;
 
@@ -35,7 +39,7 @@ public final class RefreshingSupplier<Type> implements Supplier<Type> {
   @Override
   public Type get() {
     if (expired()){
-      invalidate();
+      service.execute(this::invalidate);
     }
     return cachedReference;
   }

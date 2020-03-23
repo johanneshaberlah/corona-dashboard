@@ -22,7 +22,7 @@ public final class CountryModelView {
     addTopCountryAttribute(model);
   }
 
-  private void addGlobalInformationAttribute(Model model){
+  private void addGlobalInformationAttribute(Model model) {
     model.addAttribute(GLOBAL_INFORMATION_ATTRIBUTE, countryModel.globalInfectionInformation());
   }
 

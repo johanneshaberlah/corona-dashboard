@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,17 +29,29 @@ public final class WebProvinceRepository implements ProvinceRepository {
   @Override
   public Collection<Province> findProvincesOfCountry(Country parent) {
     JsonElement json = readJsonElement(parent);
-    if (json == JsonNull.INSTANCE){
+    if (json == JsonNull.INSTANCE) {
       return Collections.emptyList();
     }
     JsonArray array = json.getAsJsonArray();
-    return Lists.newArrayList(array.iterator())
+    return collect(array.iterator())
       .stream()
-      .map(element -> Province.of(parent, element))
+      .map(element -> createProvince(parent, element))
       .collect(Collectors.toList());
   }
 
-  private JsonElement readJsonElement(Country parent){
-    return jsonReader.readJsonObject(UniformResourceLocatorFactory.create(String.format(BASE_URL, parent.name())));
+  private Province createProvince(Country parent, JsonElement element) {
+    return Province.of(parent, element);
+  }
+
+  private <T> Collection<T> collect(Iterator<T> iterator) {
+    return Lists.newArrayList(iterator);
+  }
+
+  private JsonElement readJsonElement(Country parent) {
+    return jsonReader.readJsonObject(
+      UniformResourceLocatorFactory.create(
+        String.format(BASE_URL, parent.name())
+      )
+    );
   }
 }
