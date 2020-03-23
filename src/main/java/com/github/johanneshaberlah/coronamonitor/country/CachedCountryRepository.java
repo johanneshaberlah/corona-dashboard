@@ -53,6 +53,6 @@ public final class CachedCountryRepository implements CountryRepository {
       Collection<Country> countries = delegate.collectCountries();
       informationRepository.applyCountryInfectionInformation(countries);
       return countries;
-    }, TimeAndUnit.create(TimeUnit.HOURS, 2));
+    }, TimeAndUnit.create(TimeUnit.MINUTES, 30));
   }
 }

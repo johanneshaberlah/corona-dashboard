@@ -34,7 +34,7 @@ public final class CachedJsonReader implements JsonReader {
 
   private LoadingCache<URL, JsonElement> createCache(){
     return CacheBuilder.newBuilder()
-      .expireAfterAccess(1, TimeUnit.HOURS)
+      .expireAfterAccess(25, TimeUnit.MINUTES)
       .build(createDelegatingCacheLoader());
   }
 
