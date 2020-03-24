@@ -1,5 +1,6 @@
 package com.github.johanneshaberlah.coronamonitor.country;
 
+import com.github.johanneshaberlah.coronamonitor.common.MoreSuppliers;
 import com.github.johanneshaberlah.coronamonitor.common.RefreshingSupplier;
 import com.github.johanneshaberlah.coronamonitor.common.TimeAndUnit;
 import com.google.common.base.Suppliers;
@@ -49,7 +50,7 @@ public final class CachedCountryRepository implements CountryRepository {
   }
 
   private Supplier<Collection<Country>> createCountrySupplier(){
-    return RefreshingSupplier.create(() -> {
+    return MoreSuppliers.concurrentRefreshingSupplier(() -> {
       Collection<Country> countries = delegate.collectCountries();
       informationRepository.applyCountryInfectionInformation(countries);
       return countries;

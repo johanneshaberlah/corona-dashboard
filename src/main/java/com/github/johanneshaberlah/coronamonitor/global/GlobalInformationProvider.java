@@ -10,14 +10,16 @@ public final class GlobalInformationProvider {
   private static final String BASE_URL = "https://covid19.mathdro.id/api/";
 
   private JsonReader jsonReader;
+  private InfectionInformationFactory factory;
 
   @Autowired
-  private GlobalInformationProvider(JsonReader jsonReader) {
+  private GlobalInformationProvider(JsonReader jsonReader, InfectionInformationFactory factory) {
     this.jsonReader = jsonReader;
+    this.factory = factory;
   }
 
   public InfectionInformation globalInfectionInformation() {
-    return InfectionInformation.of(
+    return factory.of(
       jsonReader.readJsonObject(
         UniformResourceLocatorFactory.create(BASE_URL)
       ).getAsJsonObject()

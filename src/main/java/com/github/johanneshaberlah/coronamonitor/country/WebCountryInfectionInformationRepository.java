@@ -1,6 +1,7 @@
 package com.github.johanneshaberlah.coronamonitor.country;
 
 import com.github.johanneshaberlah.coronamonitor.global.InfectionInformation;
+import com.github.johanneshaberlah.coronamonitor.global.InfectionInformationFactory;
 import com.github.johanneshaberlah.coronamonitor.json.JsonReader;
 import com.github.johanneshaberlah.coronamonitor.json.UniformResourceLocatorFactory;
 import com.google.gson.JsonElement;
@@ -17,10 +18,12 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
   private static final String BASE_URL = "https://covid19.mathdro.id/api/countries/%s";
 
   private JsonReader jsonReader;
+  private InfectionInformationFactory factory;
 
   @Autowired
-  private WebCountryInfectionInformationRepository(JsonReader jsonReader) {
+  private WebCountryInfectionInformationRepository(JsonReader jsonReader, InfectionInformationFactory factory) {
     this.jsonReader = jsonReader;
+    this.factory = factory;
   }
 
   @Override
@@ -32,8 +35,8 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
           return;
         }
         JsonObject object = element.get().getAsJsonObject();
-        InfectionInformation information = InfectionInformation.of(object);
-        country.appendInfectionInformation(information);
+        InfectionInformation information = factory.of(object);
+        country.setInfectionInformation(information);
       });
   }
 

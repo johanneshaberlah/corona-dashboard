@@ -1,15 +1,15 @@
 package com.github.johanneshaberlah.coronamonitor.country;
 
-import com.github.johanneshaberlah.coronamonitor.json.UniformResourceLocatorFactory;
-import com.github.johanneshaberlah.coronamonitor.country.province.ProvinceRepository;
 import com.github.johanneshaberlah.coronamonitor.json.JsonReader;
+import com.github.johanneshaberlah.coronamonitor.json.UniformResourceLocatorFactory;
+import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -18,13 +18,14 @@ public final class WebCountryRepository implements CountryRepository {
   private static final String BASE_URL = "https://covid19.mathdro.id/api";
   private static final String PATH = "countries";
   private static final String PATH_FORMAT = "%s/%s";
-  private static final String ISO_STYLE = "iso3";
 
   private JsonReader jsonReader;
+  private CountryFactory countryFactory;
 
   @Autowired
-  private WebCountryRepository(JsonReader jsonReader) {
+  private WebCountryRepository(JsonReader jsonReader, CountryFactory countryFactory) {
     this.jsonReader = jsonReader;
+    this.countryFactory = countryFactory;
   }
 
   @Override
@@ -46,20 +47,15 @@ public final class WebCountryRepository implements CountryRepository {
   @Override
   public Collection<Country> collectCountries() {
     JsonObject json = createJsonObject();
-    return json.get(PATH).getAsJsonObject().entrySet()
+    return collect(json.get(PATH).getAsJsonArray().iterator())
       .stream()
+      .map(JsonElement::getAsJsonObject)
       .map(this::createCountry)
       .collect(Collectors.toList());
   }
 
-  private String findIsoByShortcut(String shortcut){
-    JsonObject json = createJsonObject();
-    return json.get(ISO_STYLE).getAsJsonObject().entrySet()
-      .stream()
-      .filter(entry -> entry.getKey().equalsIgnoreCase(shortcut))
-      .map(entry -> entry.getValue().getAsString())
-      .findFirst()
-      .orElse(null);
+  private <T> Collection<T> collect(Iterator<T> iterator) {
+    return Lists.newArrayList(iterator);
   }
 
   private JsonObject createJsonObject(){
@@ -68,9 +64,7 @@ public final class WebCountryRepository implements CountryRepository {
     ).getAsJsonObject();
   }
 
-  private Country createCountry(Map.Entry<String, JsonElement> entry){
-    Country prototype = Country.createWithoutProvinces(entry.getKey(), findIsoByShortcut(entry.getValue().getAsString()), entry.getValue().getAsString());
-    // return prototype.appendProvinces(provinceRepository.findProvincesOfCountry(prototype));
-    return prototype;
+  private Country createCountry(JsonObject object){
+    return countryFactory.of(object);
   }
 }

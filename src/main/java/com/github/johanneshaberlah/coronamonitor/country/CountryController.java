@@ -28,4 +28,9 @@ public final class CountryController {
     country.ifPresent(model::addAttribute);
     return "country";
   }
+
+  @GetMapping("/error")
+  public String error(){
+    return "error";
+  }
 }

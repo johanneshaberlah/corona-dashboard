@@ -46,7 +46,7 @@
     <#list topCountries as country>
         <tr class="main-table">
             <td class="main-table">
-                <img src="https://www.countryflags.io/${country.shortcut()}/flat/24.png" alt="Flag"/>
+                <img src="https://www.countryflags.io/${country.iso()}/flat/24.png" alt="Flag"/>
                 <b style="margin-left: 5px">
                     <a style="color:inherit;" href="/country/${country.name()}">${country.name()}</a>
                 </b>
