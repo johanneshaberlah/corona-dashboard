@@ -8,7 +8,7 @@ and to encourage people to stay at home and protect themselves and their fellow 
 - Improve design
 
 # Caching Lifecycle
-Every 5 hours new data from the indirect interface are loaded from the Robert Koch Institute and displayed on the website.
+Every 30 minutes new data from the indirect interface are loaded from the Robert Koch Institute and displayed on the website.
 
 # Credits
 Thanks to [Muhammed Mustadi](https://github.com/mathdroid) for providing the interface and thanks to [Felix Klauke](https://github.com/felixklauke) for sponsoring the website and domain.
