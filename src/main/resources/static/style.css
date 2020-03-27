@@ -30,17 +30,8 @@ sub {
   line-height: normal
 }
 
-.stats-table {
-  font-family: 'Asap', sans-serif;
-  font-size: 120%;
-  border: 0;
-  background-color: rgb(35, 36, 38);
-  color: white;
-}
-
-th.stats-table td.stats-table {
-  font-family: 'Asap', sans-serif;
-  font-size: medium;
+.bigger-on-desktop {
+  font-size: 400%;
 }
 
 .alignright {
@@ -73,22 +64,19 @@ th.stats-table td.stats-table {
   color: white;
 }
 
+.footer {
+  margin-top: 5%;
+  align-self: start;
+  height: auto;
+  width: auto;
+  font-family: 'Asap', sans-serif;
+  background-color: rgb(35, 36, 38);
+  color: white;
+}
+
 a {
   text-decoration: none;
   color: inherit;
-}
-
-tr.main-table:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-th.main-table {
-  text-align: center !important;
-}
-
-th, td {
-  font-family: 'Asap', sans-serif;
-  padding: 15px;
 }
 
 .bold-on-desktop {
@@ -100,16 +88,18 @@ th, td {
 }
 
 @media (max-width: 768px) {
-  th, td {
-    padding: 9px;
-  }
-
-  table.stats-table {
-    margin-left: -2% !important;
-  }
-
   .bold-on-desktop {
     font-weight: normal;
+  }
+
+  .bigger-on-desktop {
+    font-size: 250%;
+  }
+
+  .header, .footer {
+    width: 100%;
+    margin-right: 0!important;
+    margin-left: 0!important;
   }
 
   h1 {
@@ -119,10 +109,6 @@ th, td {
 
   sub {
     font-size: 80%;
-  }
-
-  table.main-table {
-    width: auto;
   }
 
   .align-on-desktop-right-phone-left {
@@ -140,20 +126,5 @@ th, td {
   .show-on-phone {
     display: block;
   }
-
 }
 
-
-table.main-table, th.main-table, td.main-table {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-
-table.main-table {
-  border-spacing: 5px;
-  width: 65%;
-  border-color: rgb(35, 36, 38);
-  margin-left: auto;
-  margin-top: 5%;
-  margin-right: auto;
-}

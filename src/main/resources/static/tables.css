@@ -1,0 +1,60 @@
+.stats-table {
+  font-family: 'Asap', sans-serif;
+  font-size: 120%;
+  border: 0;
+  background-color: rgb(35, 36, 38);
+  color: white;
+}
+
+th.stats-table td.stats-table {
+  font-family: 'Asap', sans-serif;
+  font-size: medium;
+}
+
+tr.main-table:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+th.main-table, td.main-table {
+  text-align: center !important;
+}
+
+th, td {
+  font-family: 'Asap', sans-serif;
+  padding: 15px;
+}
+
+@media (max-width: 768px) {
+  th, td {
+    padding: 9px;
+  }
+
+  table.stats-table {
+    margin-left: -2% !important;
+  }
+
+  th.main-table {
+    min-width: 150px;
+    max-width: 150px;
+  }
+
+  table.main-table {
+    width: auto;
+    margin-left: 3% !important;
+    padding-left: 3%;
+  }
+}
+
+table.main-table, th.main-table, td.main-table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+table.main-table {
+  border-spacing: 5px;
+  width: 65%;
+  border-color: rgb(35, 36, 38);
+  margin-left: auto;
+  margin-top: 5%;
+  margin-right: auto;
+}

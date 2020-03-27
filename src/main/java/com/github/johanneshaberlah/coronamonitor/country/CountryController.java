@@ -4,9 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.Optional;
 
 @Controller
 public final class CountryController {
@@ -23,14 +20,13 @@ public final class CountryController {
     return "index";
   }
 
-  @GetMapping("/country/{country}")
-  public String index(Model model, @PathVariable Optional<Country> country) {
-    country.ifPresent(model::addAttribute);
-    return "country";
+  @GetMapping("/impressum")
+  public String error(){
+    return "impressum";
   }
 
-  @GetMapping("/error")
-  public String error(){
-    return "error";
+  @GetMapping("/privacy")
+  public String privacy(){
+    return "privacy";
   }
 }
