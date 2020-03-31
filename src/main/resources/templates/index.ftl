@@ -60,9 +60,9 @@
             </b>
           </span>
         </td>
-        <td class="main-table">${country.infectionInformation().confirmed()}</td>
-        <td class="main-table">${country.infectionInformation().deaths()}</td>
-        <td class="main-table">${country.infectionInformation().recovered()}</td>
+        <td style="text-align: center" class="main-table">${country.infectionInformation().confirmed()} <small style="color: green">+${country.proliferationSinceYesterday().absolute()}</small></td>
+        <td style="text-align: center" class="main-table">${country.infectionInformation().deaths()}</td>
+        <td style="text-align: center" class="main-table">${country.infectionInformation().recovered()}</td>
       </tr>
     </#list>
   </table>

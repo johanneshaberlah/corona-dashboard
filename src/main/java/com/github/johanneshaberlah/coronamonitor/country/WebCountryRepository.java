@@ -1,5 +1,6 @@
  package com.github.johanneshaberlah.coronamonitor.country;
 
+ import com.github.johanneshaberlah.coronamonitor.daily.ProliferationRateProvider;
  import com.github.johanneshaberlah.coronamonitor.json.JsonReader;
  import com.google.common.collect.Lists;
  import com.google.gson.JsonElement;

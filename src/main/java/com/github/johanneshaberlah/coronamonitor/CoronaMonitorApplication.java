@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class CoronaMonitorApplication {
 
   public static void main(String[] options) {
+    System.setProperty("tomcat.util.http.parser.HttpParser.requestTargetAllow", "{}");
     SpringApplication.run(CoronaMonitorApplication.class, options);
   }
 }

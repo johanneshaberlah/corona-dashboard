@@ -1,6 +1,7 @@
 package com.github.johanneshaberlah.coronamonitor.country;
 
 import com.github.johanneshaberlah.coronamonitor.common.Optionals;
+import com.github.johanneshaberlah.coronamonitor.daily.ProliferationRateProvider;
 import com.github.johanneshaberlah.coronamonitor.global.InfectionInformation;
 import com.github.johanneshaberlah.coronamonitor.global.InfectionInformationFactory;
 import com.github.johanneshaberlah.coronamonitor.json.JsonReader;
@@ -25,16 +26,6 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
   private WebCountryInfectionInformationRepository(JsonReader jsonReader, InfectionInformationFactory factory) {
     this.jsonReader = jsonReader;
     this.factory = factory;
-  }
-
-  @Override
-  public Optional<InfectionInformation> findByCountryAndDate(Country country, Date date) {
-    Optional<JsonElement> element = findInformationByCountry(
-      country, formatDailyUrl(date)
-    );
-    return element
-      .map(JsonElement::getAsJsonObject)
-      .map(factory::of);
   }
 
   @Override

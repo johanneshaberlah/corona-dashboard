@@ -1,16 +1,18 @@
 package com.github.johanneshaberlah.coronamonitor.country;
 
 import com.github.johanneshaberlah.coronamonitor.common.MoreSuppliers;
-import com.github.johanneshaberlah.coronamonitor.common.RefreshingSupplier;
 import com.github.johanneshaberlah.coronamonitor.common.TimeAndUnit;
-import com.google.common.base.Suppliers;
+import com.github.johanneshaberlah.coronamonitor.daily.ProliferationRateProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -21,15 +23,18 @@ import java.util.function.Supplier;
 public final class CachedCountryRepository implements CountryRepository {
   private CountryRepository delegate;
   private CountryInfectionInformationRepository informationRepository;
+  private ProliferationRateProvider proliferationProvider;
   private Supplier<Collection<Country>> countrySupplier;
 
   @Autowired
   private CachedCountryRepository(
     CountryRepository delegate,
-    CountryInfectionInformationRepository informationRepository
+    CountryInfectionInformationRepository informationRepository,
+    ProliferationRateProvider proliferationProvider
   ) {
     this.delegate = delegate;
     this.informationRepository = informationRepository;
+    this.proliferationProvider = proliferationProvider;
     countrySupplier = createCountrySupplier();
     collectCountries();
   }
@@ -49,11 +54,22 @@ public final class CachedCountryRepository implements CountryRepository {
     return countrySupplier.get();
   }
 
-  private Supplier<Collection<Country>> createCountrySupplier(){
+  private Supplier<Collection<Country>> createCountrySupplier() {
     return MoreSuppliers.concurrentRefreshingSupplier(() -> {
       Collection<Country> countries = delegate.collectCountries();
       informationRepository.applyCountryInfectionInformation(countries);
+      countries.forEach(this::applyProliferationRate);
       return countries;
     }, TimeAndUnit.create(TimeUnit.MINUTES, 30));
+  }
+
+  private void applyProliferationRate(Country country){
+    country.setProliferationSinceYesterday(
+      proliferationProvider.calculateProliferationSince(country, dayBeforeYesterday())
+    );
+  }
+
+  private Date dayBeforeYesterday() {
+    return Date.from(Instant.now().minus(2, ChronoUnit.DAYS));
   }
 }

@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Primary;
@@ -22,7 +23,7 @@ public final class CachedJsonReader implements JsonReader {
   private LoadingCache<URL, JsonElement> cache;
 
   @Autowired
-  private CachedJsonReader(JsonReader delegate) {
+  public CachedJsonReader(JsonReader delegate) {
     this.delegate = delegate;
     this.cache = createCache();
   }
@@ -36,7 +37,7 @@ public final class CachedJsonReader implements JsonReader {
     try {
       return readJsonObject(new URL(String.format(url, parameter)));
     } catch (MalformedURLException ignored) {
-      return null;
+      return JsonNull.INSTANCE;
     }
   }
 

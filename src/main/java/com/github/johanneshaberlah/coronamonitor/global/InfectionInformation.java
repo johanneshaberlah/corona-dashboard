@@ -1,6 +1,6 @@
 package com.github.johanneshaberlah.coronamonitor.global;
 
-public final class InfectionInformation {
+public class InfectionInformation {
   private int confirmed;
   private int recovered;
   private int deaths;
@@ -21,6 +21,12 @@ public final class InfectionInformation {
 
   public int deaths() {
     return deaths;
+  }
+
+  public void add(InfectionInformation infectionInformation){
+    this.confirmed += infectionInformation.confirmed();
+    this.recovered += infectionInformation.recovered();
+    this.deaths += infectionInformation.deaths();
   }
 
 }

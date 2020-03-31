@@ -15,8 +15,8 @@ public final class InfectionInformationFactory {
   private static final String RECOVERED_ATRRIBUTE = "recovered";
   private static final String DEATHS_ATRRIBUTE = "deaths";
 
-  public InfectionInformation of(JsonObject element){
-    if (!element.has(CONFIRMED_ATRRIBUTE)){
+  public InfectionInformation of(JsonObject element) {
+    if (!element.has(CONFIRMED_ATRRIBUTE)) {
       return empty();
     }
     return create(
@@ -26,18 +26,29 @@ public final class InfectionInformationFactory {
     );
   }
 
-  private int readValue(JsonObject element, String path){
-    return element.getAsJsonObject().get(path).getAsJsonObject().get(VALUE_SUB_PATH).getAsInt();
+  public InfectionInformation ofDailyEntry(JsonObject entry){
+    if (!entry.has(CONFIRMED_ATRRIBUTE)) {
+      return empty();
+    }
+    return create(
+      entry.get(CONFIRMED_ATRRIBUTE).getAsInt(),
+      entry.get(RECOVERED_ATRRIBUTE).getAsInt(),
+      entry.get(DEATHS_ATRRIBUTE).getAsInt()
+    );
   }
 
-  public InfectionInformation empty(){
-    return create(DEFAULT_VALUE, DEFAULT_VALUE, DEFAULT_VALUE);
-  }
-
-  public static InfectionInformation create(int confirmed, int recovered, int deaths){
+  public static InfectionInformation create(int confirmed, int recovered, int deaths) {
     Preconditions.checkArgument(confirmed >= DEFAULT_VALUE);
     Preconditions.checkArgument(recovered >= DEFAULT_VALUE);
     Preconditions.checkArgument(deaths >= DEFAULT_VALUE);
     return new InfectionInformation(confirmed, recovered, deaths);
+  }
+
+  public InfectionInformation empty() {
+    return create(DEFAULT_VALUE, DEFAULT_VALUE, DEFAULT_VALUE);
+  }
+
+  private int readValue(JsonObject element, String path) {
+    return element.getAsJsonObject().get(path).getAsJsonObject().get(VALUE_SUB_PATH).getAsInt();
   }
 }

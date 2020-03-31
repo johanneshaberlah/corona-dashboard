@@ -23,9 +23,8 @@ public final class SimpleJsonReader implements JsonReader {
     try {
       return parser.parse(IOUtils.toString(url, CHARSET));
     } catch (IOException ignored) {
-      // Ignored
+      return JsonNull.INSTANCE;
     }
-    return JsonNull.INSTANCE;
   }
 
   public JsonElement readJsonElement(String url, Object... parameter) {

@@ -97,7 +97,7 @@ a {
   }
 
   .header, .footer {
-    width: 100%;
+    width: max-content !important;
     margin-right: 0!important;
     margin-left: 0!important;
   }
