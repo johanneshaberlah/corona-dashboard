@@ -7,6 +7,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -25,5 +26,13 @@ public final class SimpleJsonReader implements JsonReader {
       // Ignored
     }
     return JsonNull.INSTANCE;
+  }
+
+  public JsonElement readJsonElement(String url, Object... parameter) {
+    try {
+      return readJsonObject(new URL(String.format(url, parameter)));
+    } catch (MalformedURLException ignored) {
+      return null;
+    }
   }
 }

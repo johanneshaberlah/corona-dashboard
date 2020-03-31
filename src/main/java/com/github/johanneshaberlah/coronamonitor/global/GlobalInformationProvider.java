@@ -1,7 +1,6 @@
 package com.github.johanneshaberlah.coronamonitor.global;
 
 import com.github.johanneshaberlah.coronamonitor.json.JsonReader;
-import com.github.johanneshaberlah.coronamonitor.json.UniformResourceLocatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,9 +19,8 @@ public final class GlobalInformationProvider {
 
   public InfectionInformation globalInfectionInformation() {
     return factory.of(
-      jsonReader.readJsonObject(
-        UniformResourceLocatorFactory.create(BASE_URL)
-      ).getAsJsonObject()
+      jsonReader.readJsonElement(BASE_URL)
+        .getAsJsonObject()
     );
   }
 }

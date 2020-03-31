@@ -1,6 +1,5 @@
 package com.github.johanneshaberlah.coronamonitor.json;
 
-import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -11,6 +10,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -32,13 +32,21 @@ public final class CachedJsonReader implements JsonReader {
     return cache.getUnchecked(url);
   }
 
-  private LoadingCache<URL, JsonElement> createCache(){
+  public JsonElement readJsonElement(String url, Object... parameter) {
+    try {
+      return readJsonObject(new URL(String.format(url, parameter)));
+    } catch (MalformedURLException ignored) {
+      return null;
+    }
+  }
+
+  private LoadingCache<URL, JsonElement> createCache() {
     return CacheBuilder.newBuilder()
       .expireAfterAccess(25, TimeUnit.MINUTES)
       .build(createDelegatingCacheLoader());
   }
 
-  private CacheLoader<URL, JsonElement> createDelegatingCacheLoader(){
+  private CacheLoader<URL, JsonElement> createDelegatingCacheLoader() {
     return new CacheLoader<URL, JsonElement>() {
       @Override
       public JsonElement load(URL url) {

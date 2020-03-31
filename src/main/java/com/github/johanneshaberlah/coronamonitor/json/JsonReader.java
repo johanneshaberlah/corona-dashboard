@@ -8,4 +8,6 @@ public interface JsonReader {
 
   JsonElement readJsonObject(URL url);
 
+  JsonElement readJsonElement(String url, Object... parameter);
+
 }
