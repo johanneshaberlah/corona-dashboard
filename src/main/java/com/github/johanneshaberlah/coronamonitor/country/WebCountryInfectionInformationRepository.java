@@ -1,17 +1,13 @@
 package com.github.johanneshaberlah.coronamonitor.country;
 
 import com.github.johanneshaberlah.coronamonitor.common.Optionals;
-import com.github.johanneshaberlah.coronamonitor.daily.ProliferationRateProvider;
-import com.github.johanneshaberlah.coronamonitor.global.InfectionInformation;
 import com.github.johanneshaberlah.coronamonitor.global.InfectionInformationFactory;
 import com.github.johanneshaberlah.coronamonitor.json.JsonReader;
 import com.google.gson.JsonElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Optional;
 
 @Component
@@ -53,9 +49,5 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
     return Optionals.ofNullableJsonElement(
       jsonReader.readJsonElement(url, value)
     );
-  }
-
-  private String formatDailyUrl(Date date) {
-    return DAILY_URL.replace("[date]", new SimpleDateFormat("MM-dd-yyyy").format(date));
   }
 }
