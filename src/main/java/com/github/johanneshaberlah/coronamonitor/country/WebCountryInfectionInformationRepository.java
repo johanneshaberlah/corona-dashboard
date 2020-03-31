@@ -32,7 +32,9 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
     Optional<JsonElement> element = findInformationByCountry(
       country, formatDailyUrl(date)
     );
-    return element.map(jsonElement -> factory.of(jsonElement.getAsJsonObject()));
+    return element
+      .map(JsonElement::getAsJsonObject)
+      .map(factory::of);
   }
 
   @Override
@@ -42,11 +44,10 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
 
   private void applyCountryInfectionInformation(Country country) {
     Optional<JsonElement> element = findInformationByCountry(country, BASE_URL);
-    element.map(JsonElement::getAsJsonObject)
-      .ifPresent(object -> {
-        InfectionInformation information = factory.of(object);
-        country.setInfectionInformation(information);
-      });
+    element
+      .map(JsonElement::getAsJsonObject)
+      .map(factory::of)
+      .ifPresent(country::setInfectionInformation);
   }
 
   private Optional<JsonElement> findInformationByCountry(Country country, String url) {
