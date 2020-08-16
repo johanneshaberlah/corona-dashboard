@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+  corona-dashboard:
+    image: docker.pkg.github.com/felixklauke/corona-dashboard/corona-dashboard:latest
+    container_name: corona-dashboard
+    restart: always
+    networks:
+      - traefik-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.keycloak.rule=Host(`corona-dashboard.de`)"
+      - "traefik.http.routers.keycloak.entrypoints=websecure"
+      - "traefik.http.middlewares.keycloak_https.redirectscheme.scheme=https"
+      - "traefik.http.routers.keycloak.tls.certresolver=letsencryptresolver"
+      - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
+
+  traefik:
+    image: traefik:v2.2
+    container_name: traefik
+    restart: always
+    command:
+      - "--api=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencryptresolver.acme.email=johanneshaberlah@gmail.com"
+      - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
+      - "--providers.docker.network=traefik-public"
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik-public
+      - services
+    labels:
+      - "traefik.enable=true"
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .docker/config.json:/config.json
+
+networks:
+  traefik-public: {}
