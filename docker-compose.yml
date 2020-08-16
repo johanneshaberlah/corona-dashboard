@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   corona-dashboard:
-    image: docker.pkg.github.com/felixklauke/corona-dashboard/corona-dashboard:latest
+    image: docker.pkg.github.com/johanneshaberlah/corona-dashboard/corona-dashboard:latest
     container_name: corona-dashboard
     restart: always
     networks:
