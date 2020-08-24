@@ -63,7 +63,7 @@ public final class CachedCountryRepository implements CountryRepository {
     }, TimeAndUnit.create(TimeUnit.MINUTES, 30));
   }
 
-  private void applyProliferationRate(Country country){
+  private void applyProliferationRate(Country country) {
     country.setProliferationSinceYesterday(
       proliferationProvider.calculateProliferationSince(country, dayBeforeYesterday())
     );

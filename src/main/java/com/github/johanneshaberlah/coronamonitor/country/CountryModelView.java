@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 public final class CountryModelView {
   private static final String TOP_COUNTRY_ATTRIBUTE = "topCountries";
   private static final String GLOBAL_INFORMATION_ATTRIBUTE = "global";
-  private static final Integer TOP_COUNTRY_LIMIT = 20;
+  private static final Integer TOP_COUNTRY_LIMIT = 50;
 
   private CountryModel countryModel;
 
