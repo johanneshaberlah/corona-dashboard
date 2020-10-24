@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 @Primary
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public final class CachedCountryRepository implements CountryRepository {
+
   private CountryRepository delegate;
   private CountryInfectionInformationRepository informationRepository;
   private ProliferationRateProvider proliferationProvider;
@@ -56,9 +57,13 @@ public final class CachedCountryRepository implements CountryRepository {
 
   private Supplier<Collection<Country>> createCountrySupplier() {
     return MoreSuppliers.concurrentRefreshingSupplier(() -> {
+      System.out.println("Collecting countries");
       Collection<Country> countries = delegate.collectCountries();
+      System.out.println("Applying infection information");
       informationRepository.applyCountryInfectionInformation(countries);
+      System.out.println("Applying profileration");
       countries.forEach(this::applyProliferationRate);
+      System.out.println("done");
       return countries;
     }, TimeAndUnit.create(TimeUnit.MINUTES, 30));
   }

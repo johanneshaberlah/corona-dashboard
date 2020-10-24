@@ -11,29 +11,29 @@ import org.springframework.stereotype.Component;
 public final class InfectionInformationFactory {
   private static final int DEFAULT_VALUE = 0;
   private static final String VALUE_SUB_PATH = "value";
-  private static final String CONFIRMED_ATRRIBUTE = "confirmed";
-  private static final String RECOVERED_ATRRIBUTE = "recovered";
-  private static final String DEATHS_ATRRIBUTE = "deaths";
+  private static final String CONFIRMED_ATTRIBUTE = "confirmed";
+  private static final String RECOVERED_ATTRIBUTE = "recovered";
+  private static final String DEATHS_ATTRIBUTE = "deaths";
 
   public InfectionInformation of(JsonObject element) {
-    if (!element.has(CONFIRMED_ATRRIBUTE)) {
+    if (!element.has(CONFIRMED_ATTRIBUTE)) {
       return empty();
     }
     return create(
-      readValue(element, CONFIRMED_ATRRIBUTE),
-      readValue(element, RECOVERED_ATRRIBUTE),
-      readValue(element, DEATHS_ATRRIBUTE)
+      readValue(element, CONFIRMED_ATTRIBUTE),
+      readValue(element, RECOVERED_ATTRIBUTE),
+      readValue(element, DEATHS_ATTRIBUTE)
     );
   }
 
   public InfectionInformation ofDailyEntry(JsonObject entry){
-    if (!entry.has(CONFIRMED_ATRRIBUTE)) {
+    if (!entry.has(CONFIRMED_ATTRIBUTE)) {
       return empty();
     }
     return create(
-      entry.get(CONFIRMED_ATRRIBUTE).getAsInt(),
-      entry.get(RECOVERED_ATRRIBUTE).getAsInt(),
-      entry.get(DEATHS_ATRRIBUTE).getAsInt()
+      entry.get(CONFIRMED_ATTRIBUTE).getAsInt(),
+      entry.get(RECOVERED_ATTRIBUTE).getAsInt(),
+      entry.get(DEATHS_ATTRIBUTE).getAsInt()
     );
   }
 

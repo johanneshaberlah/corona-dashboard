@@ -30,6 +30,7 @@ public final class WebCountryInfectionInformationRepository implements CountryIn
   }
 
   private void applyCountryInfectionInformation(Country country) {
+    System.out.println("Applying information for " + country.name());
     Optional<JsonElement> element = findInformationByCountry(country, BASE_URL);
     element
       .map(JsonElement::getAsJsonObject)
