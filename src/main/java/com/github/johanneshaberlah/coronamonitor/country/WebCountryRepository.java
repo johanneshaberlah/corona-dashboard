@@ -3,11 +3,13 @@
  import com.github.johanneshaberlah.coronamonitor.json.JsonReader;
  import com.google.common.collect.Lists;
  import com.google.gson.JsonElement;
+ import com.google.gson.JsonNull;
  import com.google.gson.JsonObject;
  import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.stereotype.Component;
 
  import java.util.Collection;
+ import java.util.Collections;
  import java.util.Optional;
  import java.util.stream.Collectors;
 
@@ -43,7 +45,12 @@ public final class WebCountryRepository implements CountryRepository {
 
   @Override
   public Collection<Country> collectCountries() {
-    JsonObject json = jsonReader.readJsonElement(BASE_URL).getAsJsonObject();
+    JsonElement element = jsonReader.readJsonElement(BASE_URL);
+    if (element.equals(JsonNull.INSTANCE)){
+      System.err.println("Failed reading countries from url " + BASE_URL);
+      return Collections.emptyList();
+    }
+    JsonObject json = element.getAsJsonObject();
     return Lists.newArrayList(json.get(JSON_PATH).getAsJsonArray().iterator())
       .stream()
       .map(JsonElement::getAsJsonObject)

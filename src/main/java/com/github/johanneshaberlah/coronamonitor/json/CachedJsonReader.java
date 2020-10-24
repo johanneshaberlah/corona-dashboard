@@ -37,6 +37,7 @@ public final class CachedJsonReader implements JsonReader {
     try {
       return readJsonObject(new URL(String.format(url, parameter)));
     } catch (MalformedURLException ignored) {
+      ignored.printStackTrace();
       return JsonNull.INSTANCE;
     }
   }
